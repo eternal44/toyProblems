@@ -1,14 +1,8 @@
 function numberToEnglish (number) {
   // import helper functions
   var maps = addMaps();
+  var placeArray = arrayifyNumber(number);
 
-  // break number into subsets of 3 digits
-  var splitNum = number.toString().split('');
-  var placeArray = [];
-  while(splitNum.length > 3){
-    placeArray.unshift(splitNum.splice(splitNum.length-3));
-  }
-  placeArray.unshift(splitNum);
 
   // make function to transcribe subsets
   var transcribe = function(subset){
@@ -19,17 +13,22 @@ function numberToEnglish (number) {
     };
 
     var transcribeTwoDigits = function(subset){
-      if(subset[0] === '1'){
-        return maps.teensMap[subset[1]];
-      } else if(subset[0] > 3 && subset[0] != 8) {
-        return maps.onesMap[subset[0]] + 'ty' + '-' + maps.onesMap[subset[1]];
+      var tensPlace = subset[0];
+      var onesPlace = subset[1];
+
+      if(tensPlace === '1'){
+        return maps.teensMap[onesPlace];
+      } else if(tensPlace > 3 && tensPlace != 8) {
+        return maps.onesMap[tensPlace] + 'ty' + '-' + maps.onesMap[onesPlace];
       } else {
-        return maps.tensMap[subset[0]] + '-' + maps.onesMap[subset[1]];
+        return maps.tensMap[tensPlace] + '-' + maps.onesMap[onesPlace];
       }
     }
 
     var transcribeTreeDigits = function(subset){
-      return maps.onesMap[subset[0]] + ' hundred';
+      var hundredsPlace = subset[0];
+
+      return maps.onesMap[hundredsPlace] + ' hundred';
     }
 
     // transcribing
@@ -55,6 +54,20 @@ function numberToEnglish (number) {
   return transcribedResult;
 }
 
+var arrayifyNumber = function (number){
+  // break number into subsets of 3 digits
+  var splitNum = number.toString().split('');
+  var placeArray = [];
+
+  while(splitNum.length > 3){
+    placeArray.unshift(splitNum.splice(splitNum.length-3));
+  }
+
+  placeArray.unshift(splitNum);
+  return placeArray;
+}
+
+
 var addMaps = function() {
   return {
     onesMap : {
@@ -68,7 +81,6 @@ var addMaps = function() {
       '8' : 'eight',
       '9' : 'nine',
     },
-
     teensMap : {
       '1' : 'eleven',
       '2' : 'twelve',
@@ -80,13 +92,11 @@ var addMaps = function() {
       '8' : 'eighteen',
       '9' : 'nineteen',
     },
-
     tensMap : {
       '2' : 'twenty',
       '3' : 'thirty',
       '8' : 'eighty'
     },
-
     subsetMap : {
       0 : '',
       1 : 'thousand',
