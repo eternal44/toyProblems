@@ -1,11 +1,31 @@
 function numberToEnglish (number) {
   // import helper functions
-  var maps = addMaps();
   var placeArray = arrayifyNumber(number);
+  var transcribe = tscribe();
+  var maps = addMaps();
 
+  // concat the transcribed number to results string
+  var transcribedResult = '';
+  var subsetCount = placeArray.length;
 
-  // make function to transcribe subsets
-  var transcribe = function(subset){
+  for(var x = 0; x < placeArray.length; x++){
+    subsetCount--;
+    transcribedResult += transcribe(placeArray[x]) + ' ' + maps.subsetMap[subsetCount] + ' ';
+  }
+
+  return transcribedResult;
+}
+
+/*
+ * ####################
+ * # HELPER FUNCTIONS #
+ * ####################
+ */
+
+// make function to transcribe subsets
+var tscribe = function(){
+  return function(subset){
+    var maps = addMaps();
     var numLength = subset.length;
 
     var transcribeOneDigit = function(subset){
@@ -41,32 +61,7 @@ function numberToEnglish (number) {
       return (transcribeTreeDigits(subset) +  ' ' + transcribeTwoDigits(slicedArr));
     }
   }
-
-  // concat the transcribed number to results string
-  var transcribedResult = '';
-  var subsetCount = placeArray.length;
-
-  for(var x = 0; x < placeArray.length; x++){
-    subsetCount--;
-    transcribedResult += transcribe(placeArray[x]) + ' ' + maps.subsetMap[subsetCount] + ' ';
-  }
-
-  return transcribedResult;
 }
-
-var arrayifyNumber = function (number){
-  // break number into subsets of 3 digits
-  var splitNum = number.toString().split('');
-  var placeArray = [];
-
-  while(splitNum.length > 3){
-    placeArray.unshift(splitNum.splice(splitNum.length-3));
-  }
-
-  placeArray.unshift(splitNum);
-  return placeArray;
-}
-
 
 var addMaps = function() {
   return {
@@ -105,10 +100,24 @@ var addMaps = function() {
   }
 }
 
+var arrayifyNumber = function (number){
+  // break number into subsets of 3 digits
+  var splitNum = number.toString().split('');
+  var placeArray = [];
+
+  while(splitNum.length > 3){
+    placeArray.unshift(splitNum.splice(splitNum.length-3));
+  }
+
+  placeArray.unshift(splitNum);
+  return placeArray;
+}
+
+
 console.log(numberToEnglish(7));//"seven"
-console.log(numberToEnglish(12));//"seven"
+console.log(numberToEnglish(14));//"seven"
 console.log(numberToEnglish(77));//"seventy seven"
 console.log(numberToEnglish(26));//"seventy seven"
-console.log(numberToEnglish(86));//"seventy seven"
-console.log(numberToEnglish(575));//"five hundred seventy-five"
-console.log(numberToEnglish(78193512));//"seventy-eight million one hundred ninety-three thousand five hundredndred twelve"
+// console.log(numberToEnglish(86));//"seventy seven"
+// console.log(numberToEnglish(575));//"five hundred seventy-five"
+// console.log(numberToEnglish(78193512));//"seventy-eight million one hundred ninety-three thousand five hundredndred twelve"
