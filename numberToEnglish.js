@@ -13,7 +13,11 @@ function numberToEnglish (number) {
     transcribedResult += transcribe(placeArray[x]) + ' ' + maps.subsetMap[subsetCount] + ' ';
   }
 
-  return transcribedResult;
+  if(number == 0){
+    return 'zero';
+  }
+
+  return transcribedResult.trim();
 }
 
 /*
@@ -38,17 +42,24 @@ var tscribe = function(){
 
       if(tensPlace === '1'){
         return maps.teensMap[onesPlace];
-      } else if(tensPlace > 3 && tensPlace != 8) {
-        return maps.onesMap[tensPlace] + 'ty' + '-' + maps.onesMap[onesPlace];
+      } else if(tensPlace > 5 && tensPlace != 8) {
+        return ' ' + maps.onesMap[tensPlace] + 'ty' + '-' + maps.onesMap[onesPlace];
       } else {
-        return maps.tensMap[tensPlace] + '-' + maps.onesMap[onesPlace];
+        if(tensPlace == 0){
+          return maps.onesMap[onesPlace];
+        } else if(onesPlace == 0){
+          return ' ' + maps.tensMap[tensPlace];
+        } else {
+          return ' ' + maps.tensMap[tensPlace] + '-' + maps.onesMap[onesPlace];
+        }
       }
     }
 
     var transcribeTreeDigits = function(subset){
       var hundredsPlace = subset[0];
 
-      return maps.onesMap[hundredsPlace] + ' hundred';
+      // if the hundreds place is 0 we don't want to include it's suffix
+      return hundredsPlace == 0 ? '' : maps.onesMap[hundredsPlace] + ' hundred';
     }
 
     // transcribing
@@ -58,14 +69,16 @@ var tscribe = function(){
       var arrayMachine = [];
       var slicedArr = subset.slice(1);
 
-      return (transcribeTreeDigits(subset) +  ' ' + transcribeTwoDigits(slicedArr));
+      return (transcribeTreeDigits(subset) + transcribeTwoDigits(slicedArr));
     }
   }
 }
 
 var addMaps = function() {
   return {
+    // 355,003
     onesMap : {
+      '0' : '',
       '1' : 'one',
       '2' : 'two',
       '3' : 'three',
@@ -77,6 +90,7 @@ var addMaps = function() {
       '9' : 'nine',
     },
     teensMap : {
+      '0' : '',
       '1' : 'eleven',
       '2' : 'twelve',
       '3' : 'thirteen',
@@ -88,14 +102,20 @@ var addMaps = function() {
       '9' : 'nineteen',
     },
     tensMap : {
+      '0' : '',
       '2' : 'twenty',
       '3' : 'thirty',
+      '4' : 'forty',
+      '5' : 'fifty',
       '8' : 'eighty'
     },
     subsetMap : {
       0 : '',
       1 : 'thousand',
-      2 : 'million'
+      2 : 'million',
+      3 : 'billion',
+      4 : 'trillion',
+      5 : 'quadrillion'
     }
   }
 }
@@ -110,14 +130,14 @@ var arrayifyNumber = function (number){
   }
 
   placeArray.unshift(splitNum);
+  // console.log(placeArray);
   return placeArray;
 }
 
-
-console.log(numberToEnglish(7));//"seven"
-console.log(numberToEnglish(14));//"seven"
-console.log(numberToEnglish(77));//"seventy seven"
-console.log(numberToEnglish(26));//"seventy seven"
-// console.log(numberToEnglish(86));//"seventy seven"
-// console.log(numberToEnglish(575));//"five hundred seventy-five"
-// console.log(numberToEnglish(78193512));//"seventy-eight million one hundred ninety-three thousand five hundredndred twelve"
+// console.log(numberToEnglish(540));
+// console.log(numberToEnglish(0));
+// console.log(numberToEnglish(1));
+console.log(numberToEnglish(40));
+console.log(numberToEnglish(567));
+// console.log(numberToEnglish(355003));
+// console.log(numberToEnglish(9007199254740992));// 9,007,199,254,740,992
