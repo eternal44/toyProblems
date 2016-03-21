@@ -14,6 +14,7 @@ function evenOccurence (arr) {
   return lastOccurence;
 }
 
+// tests
 var arr1 = [ 1, 3, 3, 3, 2, 4, 4, 2, 5 ]
 var arr2 = [ "cat", "dog", "dig", "cat" ]
 var arr3 = ["doublerainbow", "grumpycat", "grumpycat", "doublerainbow"];

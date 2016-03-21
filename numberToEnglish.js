@@ -138,6 +138,7 @@ var arrayifyNumber = function(number){
   return placeArray;
 }
 
+// // add as tests!
 // console.log(numberToEnglish(540));
 // console.log(numberToEnglish(0));
 // console.log(numberToEnglish(1));
