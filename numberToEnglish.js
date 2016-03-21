@@ -1,3 +1,7 @@
+// handle edge cases
+// decimals
+// leading zeros
+
 function numberToEnglish (number) {
   // import helper functions
   var placeArray = arrayifyNumber(number);
@@ -120,7 +124,7 @@ var addMaps = function() {
   }
 }
 
-var arrayifyNumber = function (number){
+var arrayifyNumber = function(number){
   // break number into subsets of 3 digits
   var splitNum = number.toString().split('');
   var placeArray = [];
@@ -137,7 +141,8 @@ var arrayifyNumber = function (number){
 // console.log(numberToEnglish(540));
 // console.log(numberToEnglish(0));
 // console.log(numberToEnglish(1));
-console.log(numberToEnglish(40));
-console.log(numberToEnglish(567));
+// console.log(rejectDecimals(4.3));
+// console.log(rejectDecimals(4.0));
+// console.log(exceptionHandler(0.4));
 // console.log(numberToEnglish(355003));
 // console.log(numberToEnglish(9007199254740992));// 9,007,199,254,740,992
