@@ -11,10 +11,14 @@ function numberToEnglish (number) {
   // concat the transcribed number to results string
   var transcribedResult = '';
   var subsetCount = placeArray.length;
+  var transcribedSegment;
 
   for(var x = 0; x < placeArray.length; x++){
     subsetCount--;
-    transcribedResult += transcribe(placeArray[x]) + ' ' + maps.subsetMap[subsetCount] + ' ';
+    transcribedSegment = transcribe(placeArray[x]);
+    if(transcribedSegment.length !== 0){
+      transcribedResult += transcribedSegment + ' ' + maps.subsetMap[subsetCount] + ' ';
+    }
   }
 
   if(number == 0){
@@ -43,11 +47,15 @@ var tscribe = function(){
     var transcribeTwoDigits = function(subset){
       var tensPlace = subset[0];
       var onesPlace = subset[1];
+      var tensDash = '';
+
+      if(onesPlace != 0) tensDash = '-';
+
 
       if(tensPlace === '1'){
         return maps.teensMap[onesPlace];
       } else if(tensPlace > 5 && tensPlace != 8) {
-        return ' ' + maps.onesMap[tensPlace] + 'ty' + '-' + maps.onesMap[onesPlace];
+        return ' ' + maps.onesMap[tensPlace] + 'ty' + tensDash + maps.onesMap[onesPlace];
       } else {
         if(tensPlace == 0){
           return maps.onesMap[onesPlace];
@@ -119,7 +127,8 @@ var addMaps = function() {
       2 : 'million',
       3 : 'billion',
       4 : 'trillion',
-      5 : 'quadrillion'
+      5 : 'quadrillion',
+      6 : 'quintillion'
     }
   }
 }
@@ -139,11 +148,12 @@ var arrayifyNumber = function(number){
 }
 
 // // add as tests!
-// console.log(numberToEnglish(540));
-// console.log(numberToEnglish(0));
-// console.log(numberToEnglish(1));
-// console.log(rejectDecimals(4.3));
-// console.log(rejectDecimals(4.0));
-// console.log(exceptionHandler(0.4));
-// console.log(numberToEnglish(355003));
-// console.log(numberToEnglish(9007199254740992));// 9,007,199,254,740,992
+console.log(numberToEnglish(540));
+console.log(numberToEnglish(0));
+console.log(numberToEnglish(112));
+console.log(numberToEnglish(355003));
+console.log(numberToEnglish(9007199254740992));// 9,007,199,254,740,992
+console.log(numberToEnglish(1000000000000000000));//
+console.log(numberToEnglish(17490));//
+console.log(numberToEnglish(78193512));//
+
